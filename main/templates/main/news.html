@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<header class="page-heading">
+    <span class="eyebrow">Будьте в курсе</span>
+    <h1>Новости гильдии</h1>
+    <p>Анонсы, объявления и жизнь vetmo между катками.</p>
+</header>
+{% if page_obj or request.GET.q %}
+{# Общий компонент карточек используется и новостями, и дневником. #}
+{% include 'main/publication_list.html' %}
+{% else %}
+<section class="empty-state">
+    <span class="feature-icon" aria-hidden="true">✧</span>
+    <h2>Новости ещё впереди</h2>
+    <p>Объявления гильдии появятся здесь. Пока познакомься с тем, как мы играем.</p>
+    <a class="button-primary" href="{% url 'prod' %}">Как играют в vetmo</a>
+</section>
+{% endif %}
+{% if perms.main.add_publication %}
+{# Ссылка редактора видна пользователю с правом добавления публикаций. #}
+<p><a class="text-link" href="{% url 'admin:main_publication_add' %}?kind=news">+ Добавить новость</a></p>
+{% endif %}
+{% endblock %}

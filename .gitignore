@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.py[cod]
+.local/
+.env
+staticfiles/
+backups/
+.coverage
+.idea/
+*.sqlite3
+*.lnk
+/error.txt
+/fine.txt
+/hello.txt
+/test.txt

@@ -1,0 +1,6 @@
+<section class="feature-card" aria-labelledby="party-pick">
+{% if next_game %}<h2 id="party-pick">Твоя игра сегодня</h2><p>{{ next_game.listing.nickname }} · {{ next_game.listing.game_at|date:'d.m H:i T' }}</p><a href="{% url 'party_detail' next_game.listing_id %}">{% if next_game.confirmed_at %}Открыть состав{% else %}Подтвердить участие{% endif %} →</a>
+{% elif recommended %}<h2 id="party-pick">Открыт набор: {{ recommended.nickname }}</h2><p>Свободны: {{ recommended.open_roles|join:', ' }} · {{ recommended.members|add:1 }} из 5</p>
+{% if recommended.window %}<p>Ближайшее окно доступности: {{ recommended.window.0|date:'d.m H:i T' }} — {{ recommended.window.1|date:'d.m H:i T' }}. Старт игры ещё не назначен.</p>{% else %}<p>Расписание капитана: {{ recommended.schedule }}. Точный старт пока не назначен.</p>{% endif %}
+{% for reason in recommended.reasons %}<p>{{ reason }}</p>{% endfor %}<a href="{% url 'party_detail' recommended.pk %}#party-response">Выбрать позицию и откликнуться →</a>
+{% else %}<h2 id="party-pick">Пока нет подходящего состава</h2><a href="{% url 'party' %}">Посмотреть объявления или создать своё →</a>{% endif %}</section>

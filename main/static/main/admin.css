@@ -1,0 +1,52 @@
+/* VETMO / noir: переменные переопределяют стандартную цветовую схему Django Admin. */
+:root, html[data-theme="light"], html[data-theme="dark"] {
+    --primary: #383b44;
+    --secondary: #202228;
+    --accent: #dedee0;
+    --primary-fg: #ffffff;
+    --header-bg: #0c0d0f;
+    --header-color: #dedee0;
+    --header-branding-color: #dedee0;
+    --header-link-color: #ffffff;
+    --breadcrumbs-bg: #25272e;
+    --breadcrumbs-fg: #dedee0;
+    --breadcrumbs-link-fg: #ffffff;
+    --button-bg: #383b44;
+    --button-hover-bg: #505460;
+    --default-button-bg: #383b44;
+    --default-button-hover-bg: #505460;
+}
+/* Светлая тема сохраняет контраст текста и границ на сером фоне. */
+html[data-theme="light"] {
+    --body-bg: #eeeef0;
+    --body-fg: #191a1e;
+    --body-loud-color: #0c0d0f;
+    --body-quiet-color: #555760;
+    --link-fg: #444855;
+    --link-hover-color: #111216;
+    --link-selected-fg: #111216;
+    --hairline-color: #dcdde1;
+    --border-color: #c9cbd1;
+    --darkened-bg: #e0e1e5;
+    --selected-bg: #d9dbe2;
+    --selected-row: #d9dbe2;
+}
+/* В тёмной теме фон таблиц и границы темнее, но текст остаётся светлым. */
+html[data-theme="dark"] {
+    --body-bg: #0c0d0f;
+    --body-fg: #ececee;
+    --body-loud-color: #ffffff;
+    --body-quiet-color: #a1a3aa;
+    --link-fg: #d2d3d7;
+    --link-hover-color: #ffffff;
+    --link-selected-fg: #ffffff;
+    --hairline-color: #30323a;
+    --border-color: #3b3e48;
+    --darkened-bg: #202228;
+    --selected-bg: #2a2c32;
+    --selected-row: #2a2c32;
+}
+/* Админка использует системный шрифт независимо от витринных шрифтов. */
+body { font-family: 'Segoe UI', Arial, sans-serif; }
+.module, .button, input[type="submit"], input[type="button"], .submit-row input { border-radius: 0; }
+#changelist table tbody tr:hover { background: var(--darkened-bg); }

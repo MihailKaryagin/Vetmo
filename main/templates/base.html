@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+{# общий каркас для страниц сайта #}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+    <meta name="description" content="vetmo — гильдия в Dota 2. Найди свою пати, играй в команде и стань частью гильдии.">
+    <title>{% block title %}vetmo{% endblock %} · vetmo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Onest:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    {# сначала основа потом стекло и финальные стили #}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/glass.css' %}">
+    <link rel="stylesheet" href="{% static 'css/atelier.css' %}">
+    {# скрипт запускаем когда элементы страницы уже готовы #}
+    <script src="{% static 'js/effects.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'css/support.css' %}">
+    <link rel="stylesheet" href="{% static 'css/community.css' %}">
+    <script src="{% static 'js/support.js' %}" defer></script>
+    <script src="{% static 'js/community.js' %}" defer></script>
+<link rel="stylesheet" href="{% static 'css/guild.css' %}">
+</head>
+<body>
+{# украшения не мешают нажимать на элементы #}
+<div class="ambient-scene" aria-hidden="true">
+    <span class="ambient-orb ambient-orb--honey"></span>
+    <span class="ambient-orb ambient-orb--peach"></span>
+    <span class="ambient-orb ambient-orb--sage"></span>
+</div>
+<div class="scroll-progress" aria-hidden="true"></div>
+<div class="page-grain" aria-hidden="true"></div>
+{# с клавиатуры можно сразу перейти к содержимому #}
+<a class="skip-link" href="#main-content">Перейти к содержимому</a>
+
+<header class="main-header">
+    <div class="brand">
+        <button class="brand-mark logo-play" type="button" aria-label="Покрутить логотип vetmo"><img class="brand-image" src="{% static 'img/vetmo-original.jpg' %}" alt="" width="34" height="34" referrerpolicy="no-referrer"></button>
+        <a href="{% url 'start' %}">vetmo</a>
+    </div>
+
+    {# отмечаем текущую страницу в меню #}
+    <a class="party-shortcut" href="{% url 'party' %}" {% if request.resolver_match.url_name == 'party' %}aria-current="page"{% endif %}>Найти пати</a>
+    <button class="nav-toggle button-secondary" type="button" aria-expanded="false" aria-controls="main-navigation" hidden>Меню</button>
+    <nav class="main-nav" id="main-navigation" aria-label="Основная навигация">
+        <a href="{% url 'people' %}">Игроки</a><a href="{% url 'events' %}">События</a>
+        <details><summary>Гильдия</summary><div class="nav-group"><a href="{% url 'start' %}">Главная</a><a href="{% url 'news' %}">Новости</a><a href="{% url 'about' %}">О гильдии</a><a href="{% url 'blog' %}">Дневник</a><a href="{% url 'prod' %}">Как играем</a><a href="{% url 'communities' %}">Сообщества</a><a href="{% url 'polls' %}">Опросы</a></div></details>
+        <details><summary>Соревнования</summary><div class="nav-group"><a href="{% url 'game_day' %}">Игровой день</a><a href="{% url 'tournaments' %}">Турниры</a><a href="{% url 'matches' %}">Матчи</a></div></details><a href="{% url 'store' %}">Мерч</a>
+        {% if user.is_authenticated %}<a href="{% url 'favorites' %}">Избранное</a><a href="{% url 'account' %}#notifications" data-notification-url="{% url 'notification_count' %}" aria-label="Непрочитанные уведомления">🔔 <span data-notification-count>{{ unread_notifications }}</span></a>{% endif %}
+        {% if user.is_authenticated %}<a href="{% url 'account' %}">Мой кабинет</a>{% else %}<a href="{% url 'login' %}">Войти</a>{% endif %}
+    </nav>
+
+    <a class="header-button" href="{% url 'myform' %}" {% if request.resolver_match.url_name == 'myform' or request.resolver_match.url_name == 'obr_result' %}aria-current="page"{% endif %}>Хочу в vetmo</a>
+</header>
+
+<main class="page-content" id="main-content" tabindex="-1">
+    {% if messages %}<div class="flash-messages" role="status">{% for message in messages %}<p class="flash-message">{{ message }}</p>{% endfor %}</div>{% endif %}
+    {# сюда подставляется содержимое страницы #}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+    <div class="brand">
+        <button class="brand-mark logo-play" type="button" aria-label="Покрутить логотип vetmo"><img class="brand-image" src="{% static 'img/vetmo-original.jpg' %}" alt="" width="34" height="34" loading="lazy" referrerpolicy="no-referrer"></button>
+        <a href="{% url 'start' %}">vetmo</a>
+    </div>
+    <p>vetmo / Dota 2. Одна гильдия. Общий трон.</p>
+    <span class="copyright">© 2026 vetmo</span>
+</footer>
+{# кнопка появляется после прокрутки вниз #}
+<button class="back-to-top" type="button" aria-label="Наверх страницы" hidden>↑</button>
+
+<aside class="support-widget" data-endpoint="{% url 'support_messages' %}" aria-label="Поддержка vetmo">
+    <section class="support-panel" id="support-panel" aria-label="Чат с поддержкой" hidden>
+        <header class="support-header">
+            <div><strong>Связаться с vetmo</strong><small>Ответим здесь · время зависит от занятости команды</small></div>
+            <button type="button" class="support-close" aria-label="Закрыть чат">×</button>
+        </header>
+        <div class="support-messages" role="log" aria-live="polite" aria-relevant="additions">
+            <p class="support-welcome">Привет! Чем помочь? Напишите нам — ответ появится здесь. Если оператор занят, это может занять немного времени.</p>
+        </div>
+        <p class="support-status" role="status"></p>
+        <form class="support-form">
+            <div class="support-quick">
+                <button type="button" data-quick="Как вступить в гильдию?">Как вступить?</button>
+                <button type="button" data-quick="Где ваш Discord?">Discord</button>
+                <button type="button" data-quick="Хочу найти пати">Найти пати</button>
+                <button type="button" data-quick="У меня вопрос по мерчу">Вопрос по мерчу</button>
+            </div>
+            <label class="support-label" for="support-text">Ваше сообщение</label>
+            <textarea id="support-text" maxlength="2000" rows="2" placeholder="Написать сообщение…" required></textarea>
+            <small>Enter — отправить · Shift+Enter — перенос</small>
+            <button type="submit">Отправить ↵</button>
+        </form>
+    </section>
+    <button class="support-toggle" type="button" aria-controls="support-panel" aria-expanded="false">✦ Связаться с vetmo</button>
+</aside>
+</body>
+</html>

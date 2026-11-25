@@ -1,0 +1,4 @@
+{% extends 'base.html' %}
+{% block title %}Игровой день{% endblock %}
+{% block content %}<header class="page-heading"><h1>Игровой день</h1><p>{{ now|date:'d.m.Y T' }} · серии сегодняшнего дня</p></header>
+<div class="feature-grid">{% for match in matches %}<article class="feature-card"><span>{{ match.starts_at|date:'H:i T' }}</span><h2>{{ match.team_a }} — {{ match.team_b }}</h2><a href="{% url 'tournament_detail' match.tournament_id %}">{{ match.tournament.title }} · раунд {{ match.round }}</a><p>{% if match.is_finished %}Итог {{ match.score_a }} : {{ match.score_b }}{% else %}Результата пока нет{% endif %}</p>{% for report in match.reports.all %}{% if report.is_published and report.played_at <= now %}<a href="{% url 'match_detail' report.pk %}">{{ report.title }}</a>{% endif %}{% endfor %}</article>{% empty %}<p>На сегодня серий не назначено. <a href="{% url 'tournaments' %}">Открыть турниры →</a></p>{% endfor %}</div>{% endblock %}

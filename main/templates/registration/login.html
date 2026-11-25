@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<header class="page-heading"><h1>С возвращением</h1><p>Войди чтобы управлять профилем и объявлениями с любого устройства</p></header>
+<form class="data-form account-auth" method="post">{% csrf_token %}{{ form.as_p }}<input type="hidden" name="next" value="{{ next }}"><button class="button-primary">Войти</button><p><a class="text-link" href="{% url 'signup' %}">Создать аккаунт</a></p></form>
+<p><a class="text-link" href="{% url 'password_reset' %}">Забыл пароль</a></p>
+{% endblock %}

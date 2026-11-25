@@ -1,0 +1,4 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block extrahead %}{{ block.super }}<script src="{% static 'main/support-admin.js' %}" defer></script>{% endblock %}
+{% block content_title %}{{ block.super }}<p data-support-list>Список обновляется каждые 15 секунд. Откройте диалог, чтобы ответить.</p>{% endblock %}

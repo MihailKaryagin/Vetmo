@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Избранное{% endblock %}
+{% block content %}<header class="page-heading"><h1>Сохранённое</h1><a href="{% url 'account' %}">Мой кабинет</a></header><div class="feature-grid">{% for favorite in favorites %}<article class="feature-card">
+{% if favorite.person %}{% if favorite.person.is_active and favorite.person.is_public %}<a href="{% url 'player_detail' favorite.person.pk %}">{{ favorite.person.display_name }}</a>{% else %}<p>Профиль скрыт</p>{% endif %}
+{% elif favorite.listing %}{% if favorite.listing.is_active and favorite.listing.expires_at > now %}<a href="{% url 'party_detail' favorite.listing.pk %}">{{ favorite.listing.nickname }}</a>{% else %}<p>Объявление больше не доступно</p>{% endif %}
+{% else %}<a href="{% url 'product_detail' favorite.product.pk %}">{{ favorite.product.name }}</a>{% endif %}
+<form method="post" action="{% url 'favorite_remove' favorite.pk %}">{% csrf_token %}<button class="button-secondary">Убрать из избранного</button></form></article>{% empty %}<p>Сохраняй игроков объявления и товары на их страницах</p>{% endfor %}</div>{% endblock %}

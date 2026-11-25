@@ -1,0 +1,21 @@
+{# поиск работает только по открытым публикациям #}
+<form class="directory-filters" method="get"><label for="publication-search">Поиск публикаций</label><input id="publication-search" name="q" value="{{ request.GET.q }}" maxlength="200" placeholder="Заголовок или текст"><button class="button-secondary">Найти</button></form>
+<section class="publication-grid" aria-label="Публикации">
+    {% for post in page_obj %}
+    <article class="publication-card">
+        <time class="card-kicker" datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"d E Y" }}</time>
+        <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+        {# Если аннотация не задана, берём начало основного текста. #}
+        <p>{{ post.summary|default:post.body|truncatewords:40 }}</p>
+        <a class="text-link" href="{{ post.get_absolute_url }}">Читать запись <span aria-hidden="true">↗</span></a>
+    </article>
+    {% empty %}<p>Ничего не найдено попробуй другой запрос</p>{% endfor %}
+</section>
+{% if page_obj.has_other_pages %}
+{# Ссылки меняют только номер страницы, оставаясь в текущем разделе. #}
+<nav class="publication-pagination" aria-label="Страницы публикаций">
+    {% if page_obj.has_previous %}<a class="button-secondary" href="{% querystring page=page_obj.previous_page_number %}">← Новее</a>{% endif %}
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a class="button-secondary" href="{% querystring page=page_obj.next_page_number %}">Раньше →</a>{% endif %}
+</nav>
+{% endif %}

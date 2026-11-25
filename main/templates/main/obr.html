@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета игрока сохранена{% endblock %}
+
+{% block content %}
+<header class="page-heading">
+    <span class="eyebrow">vetmo / знакомство с игроком</span>
+    <h1>{% if myname %}Анкета сохранена{% else %}Начнём знакомство?{% endif %}</h1>
+    <p>{% if myname %}GG, первый шаг сделан. Вот твоя анкета игрока. Это подтверждение сохранения данных, а не вступления в гильдию.{% else %}Расскажи о себе, своей позиции и опыте в Dota 2.{% endif %}</p>
+</header>
+<section class="result-card">
+    {# Контекст содержит сохранённые значения анкеты; default даёт подписи пустым полям. #}
+    {% if myname %}
+    <span class="feature-icon" aria-hidden="true">✓</span>
+    <h2>{{ myname }}</h2>
+    <dl class="detail-list">
+        <div><dt>MMR</dt><dd>{{ step|floatformat:"0"|default:"Не указан" }}</dd></div>
+        <div><dt>Позиция</dt><dd>{{ gender|default:"Не указана" }}</dd></div>
+        <div><dt>Электронная почта</dt><dd>{{ email|default:"Не указана" }}</dd></div>
+        <div><dt>Steam</dt><dd>{{ steam_id|default:"Не указан" }}</dd></div>
+        <div><dt>Часовой пояс</dt><dd>{{ timezone_name|default:"Не указан" }}</dd></div>
+        <div><dt>Когда играет</dt><dd>{{ play_schedule|default:"Не указано" }}</dd></div>
+    </dl>
+    {% endif %}
+    <a class="button-primary" href="{% url 'myform' %}">Вернуться к анкете</a>
+</section>
+{% endblock %}

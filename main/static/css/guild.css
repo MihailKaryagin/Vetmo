@@ -1,0 +1,36 @@
+.main-header details { position: relative; }
+.main-header summary { cursor: pointer; list-style:none; }
+.main-header summary::-webkit-details-marker { display:none; }
+.main-header summary::after { content:''; width:.4em; height:.4em; border:solid currentColor; border-width:0 1px 1px 0; transform:rotate(45deg); }
+.main-header details[open] summary::after { transform:rotate(225deg); }
+.nav-group { position: absolute; z-index: 8; min-width: 10rem; padding: .75rem; background: #191a1e; color: #fff; border: 1px solid #777; border-radius: .6rem; }
+.main-nav .nav-group a { display: flex; align-items: center; padding: .4rem; color: inherit; }
+.main-header :is(.party-shortcut,.main-nav > a,.main-nav summary) { display:inline-flex; align-items:center; gap:.45em; min-height:44px; padding:8px 0; background:transparent; color:var(--muted); font:600 10px/1.3 'Onest',sans-serif; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
+.main-header :is(.party-shortcut,.main-nav > a,.main-nav summary):is(:hover,[aria-current="page"]) { color:var(--accent); text-decoration:underline; text-underline-offset:6px; }
+.roster-actions { display: grid; gap: 1rem; margin-block: 1.25rem; }
+.roster-actions button, .roster-action button { min-height: 44px; margin-block: .5rem; }
+:focus-visible { outline: 3px solid #ffe094; outline-offset: 2px; box-shadow: 0 0 0 6px #332c26; }
+.photo-fallback { display: grid; place-items: center; aspect-ratio: 1; width: 100%; text-align: center; overflow-wrap: anywhere; background: #e7e0d4; color: #30281c; }
+.merch-photo .photo-fallback { height: 100%; }
+.product-detail-photo { aspect-ratio: 1; height: auto; }
+.errorlist { color: #ffa8a8; }
+@media (max-width: 760px) {
+    .main-header { justify-content: flex-start; gap: .5rem; padding-inline: .75rem; }
+    .main-header .brand { margin-right: auto; }
+    .main-header .nav-toggle { font-size: .85rem; padding-inline: .6rem; min-height: 44px; }
+    .nav-group { position: static; }
+    .main-nav details[open] { flex-basis: 100%; }
+    article:has(> .roster-action) { margin-block: 1rem; padding: 1rem; border: 1px solid #777; border-radius: .6rem; }
+    .support-panel { max-height: calc(100dvh - 6rem); overflow-y: auto; overscroll-behavior: contain; }
+    .data-form input, .community-filters input, .data-form textarea, .support-panel textarea { scroll-margin-block: 2rem; font-size: 16px; }
+    .bracket-match { overflow-wrap: anywhere; }
+    .page-content { padding-bottom: 5rem; }
+}
+@media (max-width: 760px) and (max-height: 520px) {
+    .support-widget:has(.support-panel[hidden]) { position: static; margin: 1rem; }
+    .support-widget:has(.support-panel:not([hidden])) { bottom: .5rem; }
+    .support-messages { max-height: 20dvh; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ambient-scene, .page-grain, .scroll-progress { display: none; }
+}

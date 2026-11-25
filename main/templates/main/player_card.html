@@ -1,0 +1,13 @@
+<article class="feature-card person-card">
+    {% if person.avatar_url %}<img class="person-avatar" src="{{ person.avatar_url }}" alt="Аватар {{ person.display_name }}" loading="lazy">{% else %}<span class="feature-icon" aria-hidden="true">{{ person.display_name|first }}</span>{% endif %}
+    <span class="status-badge status-{{ person.status }}">{{ person.get_status_display }}</span>
+    <h2><a href="{% url 'player_detail' person.pk %}">{{ person.display_name }}</a></h2>
+    <p>{{ person.position|default:"Позиция не указана" }}{% if person.mmr != None %} · {{ person.mmr }} MMR{% endif %}</p>
+    {% include 'main/hero_portraits.html' %}
+    {% if person.backup_position %}<p>Запасная позиция: {{ person.backup_position }}</p>{% endif %}
+    <p>{{ person.play_schedule|default:"Время игры уточни у игрока" }}{% if person.timezone_name %} · {{ person.timezone_name }}{% endif %}</p>
+    <p class="card-kicker">{{ person.get_goal_display }}</p>
+    {% if person.compatibility %}<p class="compatibility">{{ person.compatibility }}</p>{% endif %}
+    <p>{{ person.bio|truncatewords:24 }}</p>
+    <a class="text-link" href="{% url 'player_detail' person.pk %}">Профиль и объявления →</a>
+</article>

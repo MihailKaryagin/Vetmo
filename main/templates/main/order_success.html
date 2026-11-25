@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Заказ · {{ order.get_status_display }}{% endblock %}
+{% block content %}
+<header class="page-heading"><h1>{{ order.get_status_display }}</h1><p>Номер {{ order.pk }}</p></header>
+<section class="result-card">
+    {% for item in order.items.all %}<p>{{ item.name }} · {{ item.size }} · {{ item.quantity }} шт × {{ item.price }} ₽</p>{% endfor %}
+    <h2>Итого {{ order.total }} ₽</h2><p>Стоимость доставки согласуется отдельно</p>
+    <h2>История заказа</h2>
+    <p>Создан: <time datetime="{{ order.created_at|date:'c' }}">{{ order.created_at|date:'d.m.Y H:i' }}</time></p>
+    <ol>{% for event in order.history.all %}<li>
+        <strong>{{ event.get_status_display }}</strong> · {% if event.changed_at %}<time datetime="{{ event.changed_at|date:'c' }}">{{ event.changed_at|date:'d.m.Y H:i' }}</time>{% else %}дата смены статуса не сохранилась{% endif %}
+        <p>{{ event.explanation }}</p>
+    </li>{% endfor %}</ol>
+    <button type="button" data-order-question="{{ order.pk }}">Вопрос по заказу</button>
+    {% include 'main/order_cancel_button.html' %}<a href="{% url 'store' %}">В каталог</a>
+</section>
+{% endblock %}

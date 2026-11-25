@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Мерч гильдии{% endblock %}
+
+{% block content %}
+<header class="page-heading">
+    <span class="eyebrow">vetmo / за пределами лобби</span>
+    <h1>Мерч гильдии</h1>
+    <p>Тег, который хочется носить и вне игры. Каталог вещей vetmo.</p>
+</header>
+<section class="merch-banner" aria-label="Коллекция vetmo">
+    <div><span class="eyebrow">Guild essentials / 2026</span><h2>Свой тег. Свой стиль.</h2><p>Для тех, кто с нами и после GG.</p></div>
+    <div class="merch-signature">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRqc96LIeYxD6vTinBhC0k9ImXp4Ju9f9zCIke40JE-d15MKvkm7XnJto&amp;s=10" alt="Эмблема гильдии vetmo" width="64" height="64" referrerpolicy="no-referrer">
+        <span>vetmo<small>GUILD WEAR</small></span>
+    </div>
+</section>
+<nav class="filter-bar" aria-label="Фильтр по сезону">
+    {# GET-параметр season обрабатывается в store(); активная ссылка помечена aria-current. #}
+    <a class="filter-chip" href="{% url 'store' %}" {% if season != 'зима' and season != 'лето' %}aria-current="page"{% endif %}>Все товары</a>
+    <a class="filter-chip" href="?season=зима" {% if season == 'зима' %}aria-current="page"{% endif %}>Зима</a>
+    <a class="filter-chip" href="?season=лето" {% if season == 'лето' %}aria-current="page"{% endif %}>Лето</a>
+</nav>
+<div class="feature-grid merch-grid">
+    {% for product in info.products %}
+    {# Фото берётся из модели, а для пустого URL используется тематическая заглушка. #}
+    <article class="feature-card product-card">
+        <div class="merch-photo {% if not product.image_url %}merch-photo--empty{% endif %}">
+            {% if product.image_url %}
+            <img class="merch-product-image" src="{{ product.image_url }}" alt="{{ product.name }} — фото товара" width="700" height="800" loading="lazy" referrerpolicy="no-referrer">
+            {% else %}
+            <img class="merch-product-image merch-product-image--placeholder" src="https://cdn.steamstatic.com/apps/dota2/images/dota_react/home/dpc.jpg" alt="Тематическая заглушка Dota 2 для товара {{ product.name }}" width="700" height="800" loading="lazy" referrerpolicy="no-referrer">
+            {% endif %}
+            <span class="merch-edition">GUILD COLLECTION / 26</span>
+            {# Бирка — фирменный элемент, отдельный от фотографии товара. #}
+            <div class="merch-label" aria-label="Мерч vetmo">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRqc96LIeYxD6vTinBhC0k9ImXp4Ju9f9zCIke40JE-d15MKvkm7XnJto&amp;s=10" alt="" width="32" height="32" loading="lazy" referrerpolicy="no-referrer">
+                <span>vetmo<small>ONE TAG. ONE TEAM.</small></span>
+            </div>
+        </div>
+        <div class="merch-card-content">
+        <div class="product-topline">
+            <span class="badge">{{ product.cat_id.name }}</span>
+            <span class="stock-status {% if not product.can_order %}unavailable{% endif %}">{% if product.can_order %}В наличии{% else %}Нет в наличии{% endif %}</span>
+        </div>
+         <h2><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a></h2>
+         <p class="product-price">{{ product.sale }} <span>₽</span></p>
+         {% if product.description %}<p>{{ product.description }}</p>{% endif %}
+          {% if product.variants.all %}<p>Размеры: {% for v in product.variants.all %}{{ v.size }}{% if not v.stock %} (закончился){% endif %}{% if not forloop.last %}, {% endif %}{% endfor %}</p>{% elif product.sizes %}<p class="card-kicker">Размеры: {{ product.sizes }}</p>{% endif %}
+        <dl class="detail-list">
+            <div><dt>Материал</dt><dd>{{ product.material }}</dd></div>
+            <div><dt>Дата производства</dt><dd>{{ product.data_prod|date:"d.m.Y" }}</dd></div>
+        </dl>
+         {% if product.image_source %}<a class="merch-source" href="{{ product.image_source }}" target="_blank" rel="noopener noreferrer">Источник фото ↗</a>{% endif %}
+          {% if product.can_order %}<a class="button-primary" href="{% url 'product_detail' product.pk %}">Выбрать вариант и заказать</a>{% endif %}
+        </div>
+    </article>
+    {% empty %}
+    <section class="empty-state">
+        <span class="feature-icon" aria-hidden="true">◇</span>
+        <h2>Мерч пока не добавлен</h2>
+        <p>{% if season == 'зима' or season == 'лето' %}В этой категории пока пусто. Посмотри весь каталог гильдии.{% else %}Когда появятся вещи с символикой vetmo, ты найдёшь их здесь.{% endif %}</p>
+        {% if season == 'зима' or season == 'лето' %}<a class="button-primary" href="{% url 'store' %}">Все товары</a>{% endif %}
+    </section>
+    {% endfor %}
+</div>
+<details class="merch-photo-credits">
+    {# сохраняем авторов и источники фотографий #}
+    <summary>О фотографиях коллекции</summary>
+    <p>Источники фотографий и условия использования указаны ниже и в карточках товаров.</p>
+    <p>Фото пончо: The Metropolitan Museum of Art, CC0. Шапка: Menswear Market, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>. Шлёпанцы: WikiCantona, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>. Колготы: OpaqueTights, CC0. Остальные авторы и условия использования указаны на страницах источников под товарами. Изображения показаны в монохроме.</p>
+</details>
+{% endblock %}

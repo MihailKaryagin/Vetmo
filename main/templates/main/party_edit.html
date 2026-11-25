@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Изменить объявление{% endblock %}
+{% block content %}<header class="page-heading"><h1>Изменить объявление</h1></header><form class="data-form account-auth" method="post">{% csrf_token %}{% if form.instance.game_at %}<p>При изменении позиции капитана время игры и подтверждения участников будут сброшены.</p>{% endif %}{{ form.as_p }}<button class="button-primary">Сохранить</button></form>{% endblock %}

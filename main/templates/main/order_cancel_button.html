@@ -1,0 +1,1 @@
+{% if user.is_authenticated and order.account_id == user.pk and order.status == 'new' %}<form method="post" action="{% url 'order_cancel' order.pk %}" data-confirm="Отменить заказ и вернуть товар на склад?">{% csrf_token %}<button class="button-secondary">Отменить заказ</button></form>{% endif %}

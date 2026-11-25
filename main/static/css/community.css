@@ -1,0 +1,61 @@
+/* формы и кабинет подстраиваются под узкий экран */
+.account-auth { max-width: 640px; margin-inline: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 10px; text-align: left; border-bottom: 1px solid #aaa; overflow-wrap: anywhere; }
+.main-nav { flex-wrap: wrap; }
+.community-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; }
+.community-filters p { margin: 0; }
+.community-filters label { display: block; margin-bottom: 8px; }
+.community-filters input[type="checkbox"] { min-height: 20px; width: 20px; }
+.data-form input:not([type="checkbox"]), .data-form select, .data-form textarea,
+.community-filters input:not([type="checkbox"]), .community-filters select { width: 100%; min-width: 0; min-height: 44px; padding: 12px; border: 1px solid #777; border-radius: 8px; background: #fff; color: #171717; font: inherit; box-sizing: border-box; }
+.data-form input[type="checkbox"], .community-filters input[type="checkbox"] { width: 20px; height: 20px; }
+.errorlist { color: #a01e1e; font-weight: 600; }
+.helptext { display: block; font-size: .875rem; line-height: 1.5; }
+.product-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.product-gallery figure { margin: 0; }
+.product-gallery img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; }
+.live-community { margin-block: 48px; }
+.live-community .feature-card { overflow-wrap: anywhere; }
+:focus-visible { outline: 3px solid #2459c7; outline-offset: 4px; }
+.data-form button, .pagination a, .main-nav a { min-height: 44px; }
+.feature-card, .feature-card > *, .party-list, .page-heading { min-width: 0; overflow-wrap: anywhere; }
+.feature-grid, .event-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); }
+.hero-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 16px; }
+.hero-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px 4px 4px; border: 1px solid #b7b2a8; border-radius: 8px; font-size: .8rem; }
+.hero-chip img { width: 64px; height: 36px; object-fit: cover; border-radius: 4px; }
+.status-badge { display: inline-block; padding: 6px 10px; border: 1px solid currentColor; border-radius: 20px; font-size: .8rem; margin-block: 8px; }
+.status-looking { color: #32603c; }
+.status-training { color: #775120; }
+.profile-links { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-block: 16px; }
+.profile-links a { min-height: 44px; display: inline-flex; align-items: center; }
+.bracket-match { border-bottom: 1px solid #b7b2a8; padding-block: 12px; }
+.table-scroll { overflow-x: auto; }
+.live-community > h2 { margin-top: 36px; }
+button:disabled { cursor: wait; opacity: .65; }
+.nav-toggle { display: none; }
+.roster-slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 12px; margin-block: 24px; }
+.roster-slot { padding: 16px; border: 1px solid #b7b2a8; border-radius: 10px; }
+.compatibility { padding: 8px 12px; border-left: 3px solid #32603c; font-size: .9rem; }
+.game-schedule { padding: 20px; border: 2px solid #32603c; border-radius: 10px; }
+.main-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
+[id^="event-"], [id^="match-"], [id^="team-"], #my-events { scroll-margin-top: 150px; }
+form[aria-busy="true"]::after { content: 'Сохраняем…'; display: block; margin-top: 8px; font-size: .875rem; }
+@media (max-width: 760px) {
+    .has-mobile-nav .nav-toggle { display: inline-flex; }
+    .has-mobile-nav .main-nav:not(.is-open) { display: none; }
+    .has-mobile-nav .main-nav.is-open { max-height: 65vh; overflow-y: auto; }
+    .main-header { flex-wrap: wrap; gap: 12px; }
+    .main-nav { width: 100%; display: flex; flex-wrap: wrap; gap: 8px 16px; overflow: visible; }
+    .main-nav a { display: inline-flex; align-items: center; }
+    .party-layout { display: grid; grid-template-columns: minmax(0, 1fr); }
+    .party-layout > *, .data-form, .feature-card { min-width: 0; }
+    .data-form { padding: 20px; }
+    .page-content { overflow-wrap: anywhere; }
+    .product-detail-photo { max-width: 100%; height: auto; }
+    .page-heading h1 { font-size: clamp(2rem, 10vw, 4rem); }
+    .hero-chip { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

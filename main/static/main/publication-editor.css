@@ -1,0 +1,16 @@
+/* Ограничиваем ширину редактора, чтобы длинный текст оставался читаемым. */
+.field-title input, .field-summary textarea, .field-body textarea {
+    box-sizing: border-box;
+    width: min(100%, 960px);
+}
+.field-title input { font-size: 1.2rem; }
+/* Аннотации достаточно компактного поля. */
+.field-summary textarea { min-height: 100px; height: 100px; }
+.field-body textarea {
+    /* Основной текст получает большое поле и может менять высоту вручную. */
+    min-height: 440px;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.8;
+    resize: vertical;
+}

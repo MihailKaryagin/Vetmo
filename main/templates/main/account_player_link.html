@@ -1,0 +1,1 @@
+{% if account.player_profile.is_active and account.player_profile.is_public %}<a href="{% url 'player_detail' account.player_profile.pk %}">{{ nickname }}</a>{% else %}{{ nickname }}{% endif %}

@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Страница не найдена{% endblock %}
+{% block content %}<section class="empty-state"><span class="eyebrow">404</span><h1>На этой линии никого</h1><p>Страница могла переехать, а объявление — закрыться. Начни с главной или найди новую пати.</p><a class="button-primary" href="{% url 'root' %}">На главную</a> <a class="text-link" href="{% url 'party' %}">Найти пати →</a></section>{% endblock %}

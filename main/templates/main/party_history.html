@@ -1,0 +1,6 @@
+<section><h3>Твой отклик</h3><ol>
+<li>Отправлен {{ my_response.created_at|date:'d.m H:i' }} · {{ my_response.role }}</li>
+{% if my_response.accepted_at or my_response.is_accepted %}<li>Принят {{ my_response.accepted_at|date:'d.m H:i' }}</li>{% endif %}
+{% if my_response.removed_at %}<li>{% if my_response.accepted_at %}Выведен из состава{% else %}Отклик отклонён{% endif %} {{ my_response.removed_at|date:'d.m H:i' }}</li>
+{% elif my_response.is_accepted and listing.game_at %}<li>Игра назначена на {{ listing.game_at|date:'d.m H:i T' }}</li>{% if my_response.confirmed_at %}<li>Участие подтверждено {{ my_response.confirmed_at|date:'d.m H:i' }}</li>{% endif %}{% endif %}</ol>
+<p>{% if my_response.removed_at %}Можно выбрать другую пати.{% elif not listing.is_active %}Набор закрыт.{% elif listing.game_at and listing.game_at <= now %}Время игры прошло.{% elif my_response.is_accepted and listing.game_at %}{% if my_response.confirmed_at %}Увидимся в игре!{% else %}<a href="{% url 'party_detail' listing.pk %}#game-schedule">Подтвердить участие →</a>{% endif %}{% elif listing.expires_at <= now %}Срок набора истёк.{% elif my_response.is_accepted %}Ты в составе. Капитан назначит время игры.{% else %}Ждём ответа капитана.{% endif %}</p></section>

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Матчи и разборы{% endblock %}
+{% block content %}
+<header class="page-heading"><h1>Матчи и разборы</h1><p>Наши составы, герои и выводы после игры. Обсуждаем решения, которые можем повторить или исправить.</p></header>
+<p><a href="{% url 'game_day' %}">Серии сегодняшнего игрового дня →</a></p>{% if user.is_staff and perms.main.add_publication and perms.main.change_publication %}<form method="post" action="{% url 'admin:main_publication_weekly_draft' %}">{% csrf_token %}<button class="button-secondary">Подготовить черновик итогов недели</button></form>{% endif %}
+<div class="feature-grid">{% for report in reports %}<article class="feature-card" id="match-{{ report.pk }}"><span>{{ report.played_at|date:"d.m.Y" }} · {% if report.won %}Победа{% else %}Поражение{% endif %}</span><h2>{{ report.title }}</h2><strong>{{ report.score }}</strong>
+{% if report.tournament_match and report.tournament_match.tournament.is_published %}<p><a href="{% url 'tournament_detail' report.tournament_match.tournament_id %}">{{ report.tournament_match.tournament.title }} · раунд {{ report.tournament_match.round }} →</a></p>{% endif %}
+<h3>Состав и герои</h3>{{ report.roster|linebreaks }}
+<div class="profile-links">{% for player in report.players.all %}{% if player.is_public and player.is_active %}<a href="{% url 'player_detail' player.pk %}">{{ player.display_name }} ↗</a>{% endif %}{% endfor %}</div>
+<h3>Разбор</h3>{{ report.analysis|linebreaks }}<a class="text-link" href="{% url 'match_detail' report.pk %}">Полный разбор и статистика →</a></article>{% empty %}<section class="empty-state"><h2>Первый разбор ещё впереди</h2><p>Запишись на встречу: после игры сохраним состав и выводы здесь.</p><a href="{% url 'events' %}">Ближайшие события →</a></section>{% endfor %}</div>{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Игроки vetmo{% endblock %}
+{% block content %}
+<header class="page-heading"><span class="eyebrow">vetmo / свои на карте</span><h1>Игроки гильдии</h1><p>Найди тиммейтов по нику или позиции и собери следующую пати.</p></header>
+<form class="directory-filters community-filters" method="get">
+    {{ filters.as_p }}
+    <button class="button-primary" type="submit">Найти</button>
+    <a href="{% url 'people' %}">Сбросить фильтры</a>
+</form>
+<div class="feature-grid player-grid">
+{% for person in people %}{% include 'main/player_card.html' %}{% empty %}<section class="empty-state"><h2>Пока никого не нашли</h2><p>Расширь диапазон MMR или сбрось фильтры.</p><a class="button-secondary" href="{% url 'people' %}">Все игроки</a><a class="text-link" href="{% url 'party' %}">Оставить объявление о поиске пати →</a></section>{% endfor %}
+</div>
+{% if people.has_other_pages %}<nav class="pagination" aria-label="Страницы игроков">{% if people.has_previous %}<a href="{% querystring page=people.previous_page_number %}">← Назад</a>{% endif %}<span>{{ people.number }} / {{ people.paginator.num_pages }}</span>{% if people.has_next %}<a href="{% querystring page=people.next_page_number %}">Далее →</a>{% endif %}</nav>{% endif %}
+{% endblock %}

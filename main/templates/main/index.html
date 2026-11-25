@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load tz %}
+
+{% block title %}Гильдия в Dota 2{% endblock %}
+
+{% block content %}
+{# первый экран с приглашением в гильдию #}
+<section class="sport-hero">
+    <div class="hero-content">
+        <span class="eyebrow">vetmo / гильдия в Dota 2</span>
+        <h1>ТВОЯ ПАТИ.<br>ТВОЙ ТЕГ.<br><span>ТВОЯ ГИЛЬДИЯ.</span></h1>
+        <div class="hero-intro"><p>Хватит искать своих в случайном матчмейкинге.<br>Для одной игры выбери «Найти пати». Для постоянного участия заполни анкету в гильдию. Вместе идём до трона.</p><a class="button-primary" href="{% url 'myform' %}">ХОЧУ В ГИЛЬДИЮ <span aria-hidden="true">↗</span></a></div>
+    </div>
+    <figure class="hero-photo">
+        <img src="https://cdn.steamstatic.com/apps/dota2/images/dota_react/home/radiant_dire5.jpg" alt="Сражение Radiant и Dire в Dota 2" width="1800" height="1100" fetchpriority="high" referrerpolicy="no-referrer">
+        <figcaption><span>НЕ СЛУЧАЙНЫЕ ТИММЕЙТЫ. СВОИ.</span><span>VETMO / DOTA 2 GUILD</span></figcaption>
+        <span class="photo-stamp" aria-hidden="true">V<span>↗</span></span>
+    </figure>
+    <div class="hero-meta"><span>ОДИН ТЕГ. ОБЩИЙ ТРОН.</span><a href="#community">О ГИЛЬДИИ ↓</a><span>ОТ ПЕРВОГО ПИКА ДО GG</span></div>
+</section>
+
+{% include 'main/recommended.html' %}
+<section class="live-community" aria-labelledby="live-title">
+    <div class="section-heading"><span class="eyebrow">vetmo сейчас</span><h2 id="live-title">Что играем и кого ждём</h2></div>
+    <div class="feature-grid">
+        <article class="feature-card"><span class="eyebrow">Ближайшая встреча</span>{% if upcoming_event %}<h3>{{ upcoming_event.title }}</h3><p>{% timezone 'Europe/Moscow' %}{{ upcoming_event.starts_at|date:"d.m.Y H:i" }} МСК{% endtimezone %}</p><p>{% if upcoming_event.free_places %}Свободно мест: {{ upcoming_event.free_places }}{% else %}Основной состав набран · открыта очередь{% endif %}</p><a class="text-link" href="{% url 'events' %}#event-{{ upcoming_event.pk }}">Записаться →</a>{% else %}<h3>Выбираем время следующей встречи</h3><a href="{% url 'polls' %}">Проголосовать →</a>{% endif %}</article>
+        <article class="feature-card"><span class="eyebrow">Последний разбор</span>{% if latest_report %}<h3><a href="{% url 'matches' %}#match-{{ latest_report.pk }}">{{ latest_report.title }}</a></h3><p>{{ latest_report.played_at|date:"d.m.Y" }} · {{ latest_report.score }} · {% if latest_report.won %}Победа{% else %}Поражение{% endif %}</p><p>{{ latest_report.analysis|truncatewords:32 }}</p><a class="text-link" href="{% url 'matches' %}#match-{{ latest_report.pk }}">Состав и выводы →</a>{% else %}<h3>У каждой игры будет разбор</h3><p>Первую историю опубликуем после ближайшего микса.</p><a href="{% url 'events' %}">Присоединиться →</a>{% endif %}</article>
+        <article class="feature-card"><span class="eyebrow">Следующий матч турнира</span>{% if next_match %}<h3>{{ next_match.team_a }} — {{ next_match.team_b }}</h3><p>{% timezone 'Europe/Moscow' %}{{ next_match.starts_at|date:"d.m.Y H:i" }} МСК{% endtimezone %}</p><p>{{ next_match.tournament.title }} · раунд {{ next_match.round }}</p><a class="text-link" href="{% url 'tournament_detail' next_match.tournament_id %}">Сетка и составы →</a>{% else %}<h3>Новые пары после регистрации</h3><a href="{% url 'tournaments' %}">Выбрать турнир →</a>{% endif %}</article>
+    </div>
+    <h2>Ищут пати сейчас</h2><div class="feature-grid">{% for listing in active_parties %}<article class="feature-card"><h3><a href="{% url 'party_detail' listing.pk %}">{{ listing.nickname }}</a></h3><p>{{ listing.role }} · {{ listing.schedule }}</p></article>{% empty %}<p>Создай первое объявление и собери команду</p>{% endfor %}</div><a class="text-link" href="{% url 'party' %}">Все объявления →</a>
+    <h2>Между играми</h2><div class="feature-grid">{% for post in latest_news %}<article class="feature-card"><span>{{ post.published_at|date:"d.m.Y" }}</span><h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3><p>{{ post.summary|truncatewords:24 }}</p></article>{% empty %}<p>Новости появятся после следующей встречи.</p>{% endfor %}</div>
+</section>
+<section class="community-section" id="community" aria-labelledby="community-title">
+    {# сюда ведет ссылка с первого экрана #}
+    <div class="editorial-heading section-heading"><span class="eyebrow">01 / свои на карте</span><h2 id="community-title">БОЛЬШЕ,<br>ЧЕМ ОДНА КАТКА.</h2></div>
+    <div class="community-layout">
+        <figure class="editorial-photo"><img src="https://cdn.steamstatic.com/apps/dota2/images/dota_react/home/heroes_full.jpg" alt="Герои Dota 2 готовятся к командной игре" width="1000" height="1200" loading="lazy" referrerpolicy="no-referrer"><figcaption>ПИК. КОЛЛ. КОМАНДНАЯ ИГРА.</figcaption></figure>
+        <div class="community-copy"><span class="editorial-cross" aria-hidden="true">✳</span><h3>ПЯТЬ ПОЗИЦИЙ.<br>ОДНА ЦЕЛЬ.</h3><p>Керри, мидер, оффлейнер или саппорт — у каждого своя задача. Победа начинается там, где пять игроков становятся командой.</p><p>vetmo — гильдия для тех, кому важны не только цифры рейтинга, но и люди по ту сторону микрофона. Обсуждаем игру, поддерживаем своих и не сдаёмся после неудачной линии.</p><a class="text-link" href="{% url 'about' %}">ЗНАКОМСТВО С VETMO <span aria-hidden="true">↗</span></a><div class="copy-bottom"><span>СЛЫШИМ КОЛЛЫ</span><span>ИГРАЕМ ДО ТРОНА</span></div></div>
+    </div>
+</section>
+
+<section class="editorial-destinations" aria-labelledby="explore-title">
+    {# карточки основных разделов #}
+    <div class="editorial-heading section-heading"><span class="eyebrow">02 / жизнь под одним тегом</span><h2 id="explore-title">ТВОЯ ДОТА.<br>ТВОИ ЛЮДИ.</h2><p>Знакомься с гильдией, следи за новостями и собирай свою историю в vetmo.</p></div>
+    <div class="feature-grid destination-grid">
+        <a class="feature-card card-link destination" href="{% url 'prod' %}"><div class="destination-photo"><img src="https://cdn.steamstatic.com/apps/dota2/images/dota_react/home/dpc.jpg" alt="Командный турнир по Dota 2" width="700" height="900" loading="lazy" referrerpolicy="no-referrer"><span class="destination-number">01</span></div><div class="destination-copy"><span class="card-kicker">ПАТИ / КОМАНДНАЯ ИГРА</span><h3>НЕ В СОЛО.<br>СО СВОИМИ. <span aria-hidden="true">↗</span></h3><p>Узнай, что для нас значит играть вместе.</p></div></a>
+        <a class="feature-card card-link destination" href="{% url 'news' %}"><div class="destination-photo"><img src="https://cdn.steamstatic.com/apps/dota2/images/dota_react/home/heroes_full.jpg" alt="Герои Dota 2" width="700" height="900" loading="lazy" referrerpolicy="no-referrer"><span class="destination-number">02</span></div><div class="destination-copy"><span class="card-kicker">ГИЛЬДИЯ / НОВОСТИ</span><h3>ВСЁ, ЧТО<br>МЕЖДУ КАТКАМИ. <span aria-hidden="true">↗</span></h3><p>Объявления и события нашей гильдии.</p></div></a>
+        <a class="feature-card card-link destination" href="{% url 'blog' %}"><div class="destination-photo"><img src="https://cdn.steamstatic.com/apps/dota2/images/dota_react/home/radiant_dire5.jpg" alt="Поле боя Dota 2" width="700" height="900" loading="lazy" referrerpolicy="no-referrer"><span class="destination-number">03</span></div><div class="destination-copy"><span class="card-kicker">ОПЫТ / ДНЕВНИК</span><h3>У КАЖДОЙ<br>КАТКИ — ИСТОРИЯ. <span aria-hidden="true">↗</span></h3><p>Разборы, мысли и моменты, которые хочется запомнить.</p></div></a>
+    </div>
+</section>
+
+<section class="values-strip" aria-label="Наши ценности"><span>КОМАНДА</span><b aria-hidden="true">✳</b><span>УВАЖЕНИЕ</span><b aria-hidden="true">✳</b><span>ДО ТРОНА</span></section>
+
+<section class="guild-stats" aria-label="Статистика гильдии">
+    <div><strong>{{ stats.people_count }}</strong><span>игроков в составе</span></div>
+    <div><strong>{{ stats.events_count }}</strong><span>ближайших событий</span></div>
+    <div><strong>{{ stats.party_count }}</strong><span>ищут пати сейчас</span></div>
+    <div><strong>{{ stats.published_count }}</strong><span>историй и новостей</span></div>
+</section>
+
+<section class="people-section" aria-labelledby="people-title">
+    {# если игроков нет показываем приглашение #}
+    <div class="editorial-heading section-heading"><span class="eyebrow">03 / игроки vetmo</span><h2 id="people-title">ЗА ТЕГОМ —<br>ЖИВЫЕ ЛЮДИ.</h2><p>Знакомься с теми, с кем можно разделить и камбэк, и следующую катку.</p></div>
+    <div class="feature-grid">{% for person in people %}{% include 'main/player_card.html' %}{% empty %}<div class="empty-state"><h3>ТВОЙ НИК МОЖЕТ БЫТЬ ЗДЕСЬ.</h3><p>Расскажи, на какой позиции играешь, и познакомься с vetmo.</p><a class="text-link" href="{% url 'myform' %}">ЗАПОЛНИТЬ АНКЕТУ ↗</a></div>{% endfor %}</div><a class="text-link" href="{% url 'people' %}">Все игроки и фильтры →</a>
+</section>
+
+<section class="closing-card"><div><span class="eyebrow">Твоя следующая пати</span><h2>ХВАТИТ В СОЛО.<br><span>ЗАЛЕТАЙ В VETMO.</span></h2></div><a class="closing-link" href="{% url 'myform' %}" aria-label="Заполнить анкету в гильдию vetmo">↗</a><div class="closing-caption"><span>ТВОЙ НИК. ТВОЯ РОЛЬ. НАША КОМАНДА.</span><span>VETMO / ГИЛЬДИЯ В DOTA 2</span></div></section>
+{% endblock %}

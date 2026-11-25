@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета игрока{% endblock %}
+
+{% block content %}
+<section class="form-section">
+    <div class="page-heading">
+        <span class="eyebrow">Твой первый шаг в vetmo</span>
+        <h1>Хочу в гильдию</h1>
+        <p>Расскажи, под каким ником играешь, укажи свой MMR и любимую позицию. Анкета сохраняет знакомство с тобой, но не добавляет в гильдию автоматически.</p>
+    </div>
+
+    <form class="data-form" method="post" action="{% url 'obr_result' %}">
+        {# CSRF-токен проверяется Django при отправке POST-формы. #}
+        {% csrf_token %}
+        {% if form.errors %}<div class="flash-message" role="alert">{{ form.errors }}</div>{% endif %}
+
+        <label for="myname">Ник в Dota 2</label>
+        <input type="text" name="myname" id="myname" value="{{ form.myname.value|default_if_none:'' }}" placeholder="Твой игровой ник" maxlength="100" autocomplete="nickname" required>
+
+        {# name соответствует старому имени поля модели; подпись отражает его текущее назначение. #}
+        <label for="step">MMR (необязательно)</label>
+        <input type="number" name="step" id="step" value="{{ form.step.value|default_if_none:'' }}" placeholder="Оставь пустым, если ещё не откалиброван" step="1" min="0" max="20000">
+
+        {# Значение позиции сохраняется в историческое поле gender. #}
+        <label for="gender">Основная позиция</label>
+        {{ form.gender }}
+
+        <label for="user_email">Электронная почта (необязательно)</label>
+        <input type="email" name="user_email" id="user_email" value="{{ form.email.value|default_if_none:'' }}" placeholder="name@example.com" maxlength="254" autocomplete="email">
+
+        <label for="steam_id">Steam ID или ссылка на профиль (необязательно)</label>
+        <input type="text" name="steam_id" id="steam_id" value="{{ form.steam_id.value|default_if_none:'' }}" placeholder="steamcommunity.com/id/..." maxlength="255">
+
+        <label for="timezone_name">Часовой пояс (необязательно)</label>
+        <input type="text" name="timezone_name" id="timezone_name" value="{{ form.timezone_name.value|default_if_none:'' }}" placeholder="Москва / UTC+3" maxlength="80">
+
+        <label for="play_schedule">Когда обычно играешь (необязательно)</label>
+        <input type="text" name="play_schedule" id="play_schedule" value="{{ form.play_schedule.value|default_if_none:'' }}" placeholder="Будни после 19:00" maxlength="160">
+
+        <button class="button-primary" type="submit">Отправить анкету в vetmo <span aria-hidden="true">→</span></button>
+    </form>
+
+</section>
+{% endblock %}

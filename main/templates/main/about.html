@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{# Информационная страница: текст гильдии хранится здесь, данные из БД не требуются. #}
+{% block title %}О гильдии{% endblock %}
+{% block content %}
+<header class="page-heading"><span class="eyebrow">vetmo / Dota 2</span><h1>Один тег.<br>Общий трон.</h1><p>vetmo — гильдия в Dota 2. Собираем своих, ценим командную игру и верим, что хорошая пати начинается с нормального общения.</p></header>
+<div class="feature-grid">
+    <section class="feature-card"><span class="feature-icon" aria-hidden="true">◈</span><h2>Команда важнее эго</h2><p>Слушаем друг друга, обсуждаем решения и помогаем своим. Ошибки разбираем, а не превращаем в повод для ссоры.</p></section>
+    <section class="feature-card"><span class="feature-icon" aria-hidden="true">↗</span><h2>Играем до конца</h2><p>Неудачная линия — ещё не конец игры. Ищем свой момент, держим фокус и идём до трона.</p></section>
+    <section class="feature-card"><span class="feature-icon" aria-hidden="true">+</span><h2>Найди свою пати</h2><p>Расскажи о своей позиции и опыте. Знакомство с гильдией начинается с анкеты игрока.</p><a class="text-link" href="{% url 'myform' %}">Хочу в vetmo ↗</a></section>
+</div>
+{% endblock %}

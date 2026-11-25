@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{{ person.display_name }}{% endblock %}
+{% block content %}
+<header class="page-heading"><a href="{% url 'people' %}">← Игроки</a><h1>{{ person.display_name }}</h1><p>{{ person.position|default:"Позиция не указана" }} · {% if person.mmr != None %}{{ person.mmr }} MMR{% else %}MMR не указан{% endif %}</p></header>
+<div class="party-layout"><section class="feature-card">
+{% if person.backup_position %}<p>Запасная позиция: {{ person.backup_position }}</p>{% endif %}
+{% if person.avatar_url %}<img class="person-avatar" src="{{ person.avatar_url }}" alt="Аватар {{ person.display_name }}">{% endif %}
+<span class="status-badge">{{ person.get_status_display }}{% if person.status == 'looking' and person.looking_until %} до {{ person.looking_until|date:'d.m.Y' }}{% endif %}</span><p>{{ person.get_goal_display }}</p>
+{{ person.bio|linebreaks }}<h2>Пул героев</h2>{% include 'main/hero_portraits.html' %}
+<p>{{ person.play_schedule|default:"Время игры пока не указано" }} · {{ person.timezone_name }}</p>{% if person.play_from and person.play_until %}<p>Интервал для подбора: {{ person.play_from|time:"H:i" }}–{{ person.play_until|time:"H:i" }} ({{ person.timezone_name }}).</p>{% endif %}<p>В гильдии с {{ person.joined_at|date:"d.m.Y" }}</p>
+{% if person.steam_url %}<a href="{{ person.steam_url }}" target="_blank" rel="noopener noreferrer">Steam ↗</a>{% endif %}
+<h2>Достижения</h2>{% for award in person.awards.all %}<h3>{{ award.achievement.title }}</h3><p>{{ award.achievement.description }} · {{ award.awarded_at|date:"d.m.Y" }}</p>{% empty %}<p>Первое достижение можно получить на миксе.</p><a href="{% url 'events' %}">Выбрать событие →</a>{% endfor %}
+{% if user.is_authenticated %}<form method="post" action="{% url 'favorite_toggle' 'person' person.pk %}">{% csrf_token %}<button class="button-secondary">Сохранить или убрать из избранного</button></form>{% endif %}
+</section><div class="party-list">
+<section class="feature-card"><h2>Играем вместе</h2>{% for listing in listings %}<p><a href="{% url 'party_detail' listing.pk %}">Ищет {{ listing.role }} · {{ listing.schedule }} →</a></p>{% empty %}<p>Открытых объявлений сейчас нет.</p><a href="{% url 'party' %}">Посмотреть другие пати →</a>{% endfor %}</section>
+<section class="feature-card"><h2>Последние матчи</h2>{% for report in reports %}<p><a href="{% url 'matches' %}#match-{{ report.pk }}">{{ report.title }}</a> · {{ report.played_at|date:"d.m" }} · {{ report.score }}</p>{% empty %}<p>Опубликованных разборов пока нет.</p><a href="{% url 'matches' %}">Разборы гильдии →</a>{% endfor %}</section>
+<section class="feature-card"><h2>Турнирные составы</h2>{% for team in teams %}<p><a href="{% url 'tournament_detail' team.tournament_id %}#team-{{ team.pk }}">{{ team.name }} · {{ team.tournament.title }}</a></p>{% empty %}<p>Пока без турнирных заявок.</p><a href="{% url 'tournaments' %}">Ближайшие турниры →</a>{% endfor %}</section>
+</div></div>{% endblock %}

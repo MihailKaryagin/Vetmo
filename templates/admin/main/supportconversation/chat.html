@@ -1,0 +1,34 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'main/support-admin.css' %}">{% endblock %}
+{% block extrahead %}{{ block.super }}<script src="{% static 'main/support-admin.js' %}" defer></script>{% endblock %}
+{% block breadcrumbs %}
+<div class="breadcrumbs"><a href="{% url 'admin:index' %}">Админка</a> › <a href="{% url 'admin:main_supportconversation_changelist' %}">Поддержка</a> › {{ original }}</div>
+{% endblock %}
+{% block content %}
+<div class="operator-chat" data-endpoint="{{ messages_url }}">
+    <p>Новые сообщения появляются автоматически. Ответ будет виден посетителю в окне чата на сайте.</p>
+    <div class="operator-log" role="log" aria-live="polite" aria-label="История переписки"></div>
+    <p class="operator-status" role="status">Загрузка переписки…</p>
+    {% if can_reply %}
+    <form method="post" class="operator-actions">
+        {% csrf_token %}
+        <button type="submit" name="action" value="clear" class="button">Очистить переписку</button>
+        <button type="submit" name="action" value="close" class="button" data-close-chat>Закрыть диалог</button>
+        <button type="submit" name="action" value="reopen" class="button" data-reopen-chat>Открыть диалог</button>
+    </form>
+    <form method="post" class="operator-form">
+        {% csrf_token %}
+        <div class="operator-quick">
+            <button type="button" data-quick="Откройте {{ request.scheme }}://{{ request.get_host }}{% url 'events' %}, выберите встречу и нажмите «Встать в очередь». При освобождении места первый ожидающий перейдёт в состав.">Очередь на событие</button>
+            <button type="button" data-quick="Здравствуйте! Чем можем помочь?">👋 Приветствие</button>
+            <button type="button" data-quick="Уже разбираемся, подождите немного ✨">✨ Разбираемся</button>
+            <button type="button" data-quick="Готово! Если появятся вопросы — пишите 🎮">🎮 Готово</button>
+        </div>
+        {{ form.as_p }}
+        <small>Enter — отправить · Shift+Enter — новая строка</small>
+        <button type="submit" class="button default">Отправить ответ ↵</button>
+    </form>
+    {% else %}<p>Для отправки ответов нужно право изменения диалогов поддержки.</p>{% endif %}
+</div>
+{% endblock %}

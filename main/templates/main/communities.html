@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Наши сообщества{% endblock %}
+
+{% block content %}
+<header class="page-heading">
+    <span class="eyebrow">vetmo / на связи вне игры</span>
+    <h1>Один тег.<br>Больше общения.</h1>
+    <p>Наши площадки для общения, новостей и любимых моментов из Dota 2. Ссылки скоро появятся.</p>
+</header>
+
+{# Обычные кнопки без ссылок и обработчиков. aria-disabled сообщает, что переход пока недоступен. #}
+<section class="feature-grid communities-grid" aria-label="Наши сообщества">
+    <article class="feature-card community-card">
+        <span class="card-kicker">01 / ГОЛОС И КОМАНДА</span>
+        <h2><span class="community-icon community-icon--discord" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18.9 5.2A16.2 16.2 0 0 0 15 4l-.5 1a14.5 14.5 0 0 0-5 0L9 4a16.2 16.2 0 0 0-3.9 1.2C2.6 8.9 1.9 12.5 2.2 16a15.8 15.8 0 0 0 4.8 2.4l1.1-1.5c-.6-.2-1.2-.5-1.7-.8l.4-.3c3.3 1.5 7.1 1.5 10.4 0l.4.3c-.5.3-1.1.6-1.7.8l1.1 1.5a15.8 15.8 0 0 0 4.8-2.4c.4-4-.3-7.6-2.9-10.8ZM8.8 14.1c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm6.4 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg></span>Discord</h2>
+        <p>Собираем пати, обсуждаем пики и остаёмся на связи между катками.</p>
+        <button class="button-secondary community-button" type="button" aria-disabled="true">Discord</button>
+    </article>
+    <article class="feature-card community-card">
+        <span class="card-kicker">02 / НОВОСТИ ПОД РУКОЙ</span>
+        <h2><span class="community-icon community-icon--telegram" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m21.7 4.2-3.3 15.5c-.2 1.1-.8 1.4-1.7.9l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.4-.1-.6-.6-.2L6.2 13.8l-4.7-1.5c-1-.3-1-1 .2-1.5L20 3.2c.8-.3 1.9.2 1.7 1Z"/></svg></span>Telegram</h2>
+        <p>Анонсы гильдии, важные события и всё, что хочется знать первым.</p>
+        <button class="button-secondary community-button" type="button" aria-disabled="true">ТГ-канал</button>
+    </article>
+    <article class="feature-card community-card">
+        <span class="card-kicker">03 / НАША ЛЕНТА</span>
+        <h2><span class="community-icon community-icon--vk" aria-hidden="true">VK</span>ВКонтакте</h2>
+        <p>Жизнь сообщества, обсуждения и моменты, которые объединяют своих.</p>
+        <button class="button-secondary community-button" type="button" aria-disabled="true">ВКонтакте</button>
+    </article>
+    <article class="feature-card community-card">
+        <span class="card-kicker">04 / КАТКИ В КАДРЕ</span>
+        <h2><span class="community-icon community-icon--youtube" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2C2 9 2 12 2 12s0 3 .4 4.8a2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2C22 15 22 12 22 12s0-3-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg></span>YouTube</h2>
+        <p>Лучшие эпизоды, разборы и истории наших игр в видеоформате.</p>
+        <button class="button-secondary community-button" type="button" aria-disabled="true">YouTube</button>
+    </article>
+    <article class="feature-card community-card">
+        <span class="card-kicker">05 / ПОДДЕРЖКА ГИЛЬДИИ</span>
+        <h2><span class="community-icon community-icon--boosty" aria-hidden="true">B</span>Boosty</h2>
+        <p>Площадка для тех, кто хочет поддержать развитие vetmo и наши идеи.</p>
+        <button class="button-secondary community-button" type="button" aria-disabled="true">Boosty</button>
+    </article>
+</section>
+{% endblock %}
